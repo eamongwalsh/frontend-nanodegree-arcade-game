@@ -1,11 +1,16 @@
 // Enemy class and methods below
-var Enemy = function() {
+var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
     this.sprite = 'images/enemy-bug.png';
+    this.x = x;
+    this.y = y;
+    
+    // Set the speed of the enemies - played around with this until just right!
+    this.rate = 100 + Math.floor(Math.random() * 150);
 };
 
 // Update the enemy's position, required method for game
@@ -14,6 +19,13 @@ Enemy.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x = this.x + (dt * this.rate);
+
+    // When bug goes off on the right, make it re-appear on the left
+    if (this.x > 500){
+      this.x = -101;
+    }
+
 };
 
 // Draw the enemy on the screen, required method for game
@@ -80,11 +92,13 @@ Player.prototype.handleInput = function(key) {
 // Place the player object in a variable called player
 var player = new Player();
 
-var bug1 = new Enemy();
-var bug2 = new Enemy();
-var bug3 = new Enemy();
-var bug4 = new Enemy();
-allEnemies = [bug1, bug2, bug3, bug4];
+var bug1 = new Enemy(-101,51);
+var bug2 = new Enemy(-101,134);
+var bug3 = new Enemy(-101,217);
+var bug4 = new Enemy(-301,134);
+var bug5 = new Enemy(-501,217);
+var bug6 = new Enemy(-401,51);
+allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 
 
 // This listens for key presses and sends the keys to your
