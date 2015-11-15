@@ -1,3 +1,8 @@
+//initialise scores
+
+var gameScore = 0;
+
+
 // Enemy class and methods below
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
@@ -56,6 +61,21 @@ Player.prototype.update = function(dt) {
     // all computers.
     this.x * dt;
     this.y * dt;
+    
+    // Reset the Player to initial position when he/she reaches the water
+    // and increase game score by one point!
+    if (this.y <= 0) {
+        player.reset();
+        gameScore = gameScore + 1;
+        document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+    }
+
+};
+
+Player.prototype.reset = function() {
+    // Place player at starting position
+    this.x = 201;
+    this.y = 383;
 };
 
 Player.prototype.handleInput = function(key) {
