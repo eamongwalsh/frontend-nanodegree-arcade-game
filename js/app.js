@@ -28,6 +28,10 @@ Enemy.prototype.render = function() {
 // a handleInput() method.
 var Player = function() {
     this.sprite = 'images/char-boy.png';
+    
+    // Place player at starting position
+    this.x = 201;
+    this.y = 383;
 };
 
 Player.prototype.render = function() {
@@ -38,10 +42,36 @@ Player.prototype.update = function(dt) {
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
+    this.x * dt;
+    this.y * dt;
 };
 
 Player.prototype.handleInput = function(key) {
     //Handle player movement here
+    switch(key) {
+    case 'up':
+      if (this.y > 0){
+        this.y -= 83;
+      }
+      break;
+    case 'down':
+      if (this.y < 383) {
+        this.y += 83;
+      }
+      break;
+    case 'left':
+      if (this.x > 0) {
+        this.x -= 101;
+      }
+      break;
+    case 'right':
+      if (this.x < 403){
+        this.x += 101;
+      }
+      break;
+    }
+    // Useful to find out where player is when debugging
+    console.log("Position: x " + this.x + " and y " + this.y);
 }
 
 
