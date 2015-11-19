@@ -1,6 +1,7 @@
 //initialise scores
 
 var gameScore = 0;
+var gameLives = 10;
 
 
 // Enemy class and methods below
@@ -72,10 +73,47 @@ Player.prototype.update = function(dt) {
 
 };
 
+Player.prototype.checkCollisions = function() {
+    
+        var enemyx = [];
+            for (var enemy = 0; enemy < allEnemies.length; enemy++) {
+                
+                /*
+                Used while debugging collisions to see where the heck the enemy was!!
+                enemyx.push(allEnemies[enemy].x);
+                     console.log("Pos len"+enemyx.length)
+                        for (var pos=0; pos < enemyx.length; pos++){
+                            console.log("Posx " + enemyx[pos]);
+                        }
+                */
+                
+                if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
+                player.y == allEnemies[enemy].y) {
+                        
+                        console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
+                        //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
+                        //We have a collision if the X is within +- 10 and y 
+                        //console.log("Reset the player!");
+                            
+                        //Player loses a life
+                        gameLives = gameLives - 1;
+                        document.getElementById("lives").innerHTML = "Lives: " + gameLives;
+                        this.reset();
+ 
+                }//end id
+            }//end for loop
+}
+
 Player.prototype.reset = function() {
     // Place player at starting position
     this.x = 201;
     this.y = 383;
+
+    /* TODO All lives gone - Game over!
+    if (gameLives < 0) {
+        reset();
+    }*/
+    
 };
 
 Player.prototype.handleInput = function(key) {
@@ -118,6 +156,7 @@ var bug3 = new Enemy(-101,217);
 var bug4 = new Enemy(-301,134);
 var bug5 = new Enemy(-501,217);
 var bug6 = new Enemy(-401,51);
+
 allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 
 

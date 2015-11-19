@@ -80,7 +80,7 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
+        player.checkCollisions();
     }
 
     /* This is called by the update function  and loops through all of the
@@ -160,7 +160,11 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        gameLives = 10;
+        gameScore = 0;
+ 
+        document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+        document.getElementById("lives").innerHTML = "Lives: " + gameLives;
     }
 
     /* Go ahead and load all of the images we know we're going to need to
