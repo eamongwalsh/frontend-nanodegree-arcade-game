@@ -39,6 +39,30 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+// Fish class and methods below
+var Fish = function(x,y) {
+
+    this.sprite = 'images/char-fish.png';
+    this.x = x;
+    this.y = y;
+    
+    // Set the speed of the fish - played around with this until just right!
+    this.rate = 100 + Math.floor(Math.random() * 50);
+};
+
+// Update the fish's position, 
+Fish.prototype.update = function(dt) {
+    // You should multiply any movement by the dt parameter
+    // which will ensure the game runs at the same speed for
+    // all computers. And fish goes the opposite direction!
+    this.x = this.x - (dt * this.rate);
+};
+
+// Draw the fish on the screen, required method for game
+Fish.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
 // Player class and methods below
 
 // Now write your own player class
@@ -69,6 +93,10 @@ Player.prototype.update = function(dt) {
         player.reset();
         gameScore = gameScore + 1;
         document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+    }
+    
+    if (gameScore == 3) {
+        gameOver();
     }
 
 };
@@ -104,15 +132,28 @@ Player.prototype.checkCollisions = function() {
             }//end for loop
 }
 
+Player.prototype.catchFish = function() {
+    
+        //console.log("Fish" + fish.x + " and fishy " + fish.y + player.y)
+        if (player.x < (Math.floor(fish.x) + 50) && (player.x > Math.floor(fish.x) - 50) &&
+        (player.y + 83) == fish.y ) {
+                        
+            gameScore = gameScore + 10;
+            document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+            
+            //Move fish offscreen after fish is caught
+            fish.x = -100;
+ 
+            }//end if
+}
+
 Player.prototype.reset = function() {
     // Place player at starting position
     this.x = 201;
     this.y = 383;
-
-    /* TODO All lives gone - Game over!
-    if (gameLives < 0) {
-        reset();
-    }*/
+    
+    //Add another bonus opportunity!
+    fish.x = 551;
     
 };
 
@@ -150,12 +191,15 @@ Player.prototype.handleInput = function(key) {
 // Place the player object in a variable called player
 var player = new Player();
 
-var bug1 = new Enemy(-101,51);
-var bug2 = new Enemy(-101,134);
-var bug3 = new Enemy(-101,217);
-var bug4 = new Enemy(-301,134);
-var bug5 = new Enemy(-501,217);
-var bug6 = new Enemy(-401,51);
+//Place a fish in the water - if player catches a fish they get a bonus!
+var fish = new Fish(551,134);
+
+var bug1 = new Enemy(-101,134);
+var bug2 = new Enemy(-101,217);
+var bug3 = new Enemy(-101,300);
+var bug4 = new Enemy(-301,217);
+var bug5 = new Enemy(-501,300);
+var bug6 = new Enemy(-401,134);
 
 allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 
@@ -172,3 +216,13 @@ document.addEventListener('keyup', function(e) {
 
     player.handleInput(allowedKeys[e.keyCode]);
 });
+
+function gameOver() {
+    gameLives = 10;
+    gameScore = 0;
+ 
+    document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+    document.getElementById("lives").innerHTML = "Lives: " + gameLives;
+    
+    ctx.drawImage(Resources.get('images/game-over.jpg'), 200, 200);
+}
