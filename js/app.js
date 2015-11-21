@@ -3,7 +3,6 @@
 var gameScore = 0;
 var gameLives = 10;
 
-
 // Enemy class and methods below
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
@@ -74,6 +73,7 @@ var Player = function() {
     // Place player at starting position
     this.x = 201;
     this.y = 383;
+    this.isgameOver = false;
 };
 
 Player.prototype.render = function() {
@@ -95,41 +95,41 @@ Player.prototype.update = function(dt) {
         document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
     }
     
-    if (gameScore == 3) {
-        gameOver();
-    }
-
 };
 
 Player.prototype.checkCollisions = function() {
     
-        var enemyx = [];
-            for (var enemy = 0; enemy < allEnemies.length; enemy++) {
+        // var enemyx = [];
+    if (gameLives <= 0) {
+        gameOver();
+    }
+    
+    for (var enemy = 0; enemy < allEnemies.length; enemy++) {
                 
-                /*
-                Used while debugging collisions to see where the heck the enemy was!!
-                enemyx.push(allEnemies[enemy].x);
-                     console.log("Pos len"+enemyx.length)
-                        for (var pos=0; pos < enemyx.length; pos++){
-                            console.log("Posx " + enemyx[pos]);
-                        }
-                */
+        /*
+        Used while debugging collisions to see where the heck the enemy was!!
+        enemyx.push(allEnemies[enemy].x);
+        console.log("Pos len"+enemyx.length);
+        for (var pos=0; pos < enemyx.length; pos++){
+                console.log("Posx " + enemyx[pos]);
+        }
+        */
                 
-                if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
+        if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
                 player.y == allEnemies[enemy].y) {
                         
-                        console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
-                        //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
-                        //We have a collision if the X is within +- 10 and y 
-                        //console.log("Reset the player!");
+            console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
+            //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
+            //We have a collision if the X is within +- 10 and y 
+            //console.log("Reset the player!");
                             
-                        //Player loses a life
-                        gameLives = gameLives - 1;
-                        document.getElementById("lives").innerHTML = "Lives: " + gameLives;
-                        this.reset();
+            //Player loses a life
+            gameLives = gameLives - 1;
+            document.getElementById("lives").innerHTML = "Lives: " + gameLives;
+            this.reset();
  
-                }//end id
-            }//end for loop
+        }//end id
+    }//end for loop
 }
 
 Player.prototype.catchFish = function() {
@@ -182,7 +182,7 @@ Player.prototype.handleInput = function(key) {
       break;
     }
     // Useful to find out where player is when debugging
-    console.log("Position: x " + this.x + " and y " + this.y);
+    // console.log("Position: x " + this.x + " and y " + this.y);
 }
 
 
@@ -218,11 +218,12 @@ document.addEventListener('keyup', function(e) {
 });
 
 function gameOver() {
-    gameLives = 10;
-    gameScore = 0;
- 
-    document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
-    document.getElementById("lives").innerHTML = "Lives: " + gameLives;
     
-    ctx.drawImage(Resources.get('images/game-over.jpg'), 200, 200);
+    allEnemies.forEach(function(enemy) {
+            enemy.rate = 0;
+        });
+    fish.rate = 0;
+    
+    //Set the isgameOver player property to true
+    player.isgameOver = true;
 }

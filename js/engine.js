@@ -141,6 +141,12 @@ var Engine = (function(global) {
 
 
         renderEntities();
+        
+        //If the game is over draw game over image on canvas
+        if (player.isgameOver) {   
+            ctx.drawImage(Resources.get('images/game-over.jpg'), 100, 100);
+            console.log("Game Over!");
+        }
     }
 
     /* This function is called by the render function and is called on each game
@@ -163,11 +169,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        gameLives = 10;
-        gameScore = 0;
- 
-        document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
-        document.getElementById("lives").innerHTML = "Lives: " + gameLives;
+        
     }
 
     /* Go ahead and load all of the images we know we're going to need to
@@ -180,7 +182,8 @@ var Engine = (function(global) {
         'images/grass-block.png',
         'images/enemy-bug.png',
         'images/char-boy.png',
-        'images/char-fish.png'
+        'images/char-fish.png',
+        'images/game-over.jpg'
     ]);
     Resources.onReady(init);
 
