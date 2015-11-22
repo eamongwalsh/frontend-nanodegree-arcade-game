@@ -3,6 +3,11 @@
 var gameScore = 0;
 var gameLives = 10;
 
+var scoreSound = new Audio('sounds/woohoo.wav');
+var fishSound = new Audio('sounds/success.wav');
+var enemySound = new Audio('sounds/yikes.wav');
+var gameoverSound = new Audio('sounds/gameover.wav');
+
 // Enemy class and methods below
 var Enemy = function(x,y) {
     // Variables applied to each of our instances go here,
@@ -93,6 +98,8 @@ Player.prototype.update = function(dt) {
         player.reset();
         gameScore = gameScore + 1;
         document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
+        
+        scoreSound.play();
     }
     
 };
@@ -100,7 +107,8 @@ Player.prototype.update = function(dt) {
 Player.prototype.checkCollisions = function() {
     
         // var enemyx = [];
-    if (gameLives <= 0) {
+    if (gameLives <= 0) {    
+        gameoverSound.play();
         gameOver();
     }
     
@@ -118,11 +126,13 @@ Player.prototype.checkCollisions = function() {
         if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
                 player.y == allEnemies[enemy].y) {
                         
-            console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
+            // console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
             //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
             //We have a collision if the X is within +- 10 and y 
             //console.log("Reset the player!");
-                            
+            
+            enemySound.play();
+            
             //Player loses a life
             gameLives = gameLives - 1;
             document.getElementById("lives").innerHTML = "Lives: " + gameLives;
@@ -143,6 +153,7 @@ Player.prototype.catchFish = function() {
             
             //Move fish offscreen after fish is caught
             fish.x = -100;
+            fishSound.play();
  
             }//end if
 }
