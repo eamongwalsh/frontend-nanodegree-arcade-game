@@ -5,6 +5,8 @@ Part of Udacity Front-End Web Developer nanodegree.
 
 This was a tough assignment using the HTML5 canvas and Object oriented Javascript to build a browser interactive game. The game engine was provided, however there was much to do to get it started and developed into a functioning game. Many late nights!
 
+To run the game simply clone the repository and open index.html. Instructions are on that page. Hope you like it!
+
 Much inspiration and valuable insights from the following. Thanks guys!
 
 Jedrzej Lewandowski https://github.com/TheFullResolution
