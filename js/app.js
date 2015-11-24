@@ -1,12 +1,26 @@
-//initialise scores
+//Initialise scores
 
 var gameScore = 0;
 var gameLives = 10;
 
-var scoreSound = new Audio('sounds/woohoo.wav');
-var fishSound = new Audio('sounds/success.wav');
-var enemySound = new Audio('sounds/yikes.wav');
-var gameoverSound = new Audio('sounds/gameover.wav');
+var SCORE_SOUND = new Audio('sounds/woohoo.wav');
+var FISH_SOUND = new Audio('sounds/success.wav');
+var ENEMY_SOUND = new Audio('sounds/yikes.wav');
+var GAMEOVER_SOUND = new Audio('sounds/gameover.wav');
+
+// Create a superclass character object
+// If I had more time I could refactor my code to use this superclass for all methods, however just to demonstrate this and subclasses I am just going to use it to create a subclass for the render method
+var Character = function(x, y, sprite) {
+    this.x = x;
+    this.y = y;
+    this.sprite = sprite;
+};
+
+//Pseudoclass render method
+Character.prototype.render = function() {
+    'use strict';
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 // Enemy class and methods below
 var Enemy = function(x,y) {
@@ -24,6 +38,10 @@ var Enemy = function(x,y) {
     this.rate = 100 + Math.floor(Math.random() * 150);
 };
 
+//Create a subclass to grab the render method from SuperClass "Character"
+Enemy.prototype = Object.create(Character.prototype);
+Enemy.prototype.constructor = Enemy;
+
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
@@ -40,12 +58,6 @@ Enemy.prototype.update = function(dt) {
 
 };
 
-// Draw the enemy on the screen, required method for game
-Enemy.prototype.render = function() {
-     'use strict';
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
-
 // Fish class and methods below
 var Fish = function(x,y) {
     'use strict';
@@ -57,6 +69,10 @@ var Fish = function(x,y) {
     this.rate = 100 + Math.floor(Math.random() * 50);
 };
 
+//Create a subclass to grab the render method from SuperClass "Character"
+Fish.prototype = Object.create(Character.prototype);
+Fish.prototype.constructor = Fish;
+
 // Update the fish's position
 Fish.prototype.update = function(dt) {
     'use strict';
@@ -64,12 +80,6 @@ Fish.prototype.update = function(dt) {
     // which will ensure the game runs at the same speed for
     // all computers. And fish goes the opposite direction!
     this.x = this.x - (dt * this.rate);
-};
-
-// Draw the fish on the screen, required method for game
-Fish.prototype.render = function() {
-    'use strict';
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Player class and methods below
@@ -87,75 +97,54 @@ var Player = function() {
     this.isgameOver = false;
 };
 
-Player.prototype.render = function() {
-    'use strict';
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+//Create a subclass to grab the render method from SuperClass "Character"
+Player.prototype = Object.create(Character.prototype);
+Player.prototype.constructor = Player;
 
 Player.prototype.update = function(dt) {
      'use strict';
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-    this.x * dt;
-    this.y * dt;
 
     // Reset the Player to initial position when he/she reaches the water
     // and increase game score by one point!
     if (this.y <= 0) {
-        player.reset();
+        this.reset();
         gameScore = gameScore + 1;
         document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
 
-        scoreSound.play();
+        SCORE_SOUND.play();
     }
 
 };
 
+//Check for collisions with the enemy!
 Player.prototype.checkCollisions = function() {
     'use strict';
 
-    // var enemyx = [];
     if (gameLives <= 0) {
-        gameoverSound.play();
+        GAMEOVER_SOUND.play();
         gameOver();
     }
 
     for (var enemy = 0; enemy < allEnemies.length; enemy++) {
-
-        /*
-        Used while debugging collisions to see where the heck the enemy was!!
-        enemyx.push(allEnemies[enemy].x);
-        console.log("Pos len"+enemyx.length);
-        for (var pos=0; pos < enemyx.length; pos++){
-                console.log("Posx " + enemyx[pos]);
-        }
-        */
-
         if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
                 player.y == allEnemies[enemy].y) {
 
-            // console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
-            //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
-            //We have a collision if the X is within +- 10 and y
-            //console.log("Reset the player!");
-
-            enemySound.play();
+            ENEMY_SOUND.play();
 
             //Player loses a life
             gameLives = gameLives - 1;
             document.getElementById("lives").innerHTML = "Lives: " + gameLives;
             this.reset();
 
-        }//end id
+        }//end if
     }//end for loop
-}
+};
 
+//Check if the player catches any fish!
 Player.prototype.catchFish = function() {
 
     'use strict';
-        //console.log("Fish" + fish.x + " and fishy " + fish.y + player.y)
-        if (player.x < (Math.floor(fish.x) + 50) && (player.x > Math.floor(fish.x) - 50) &&
+    if (player.x < (Math.floor(fish.x) + 50) && (player.x > Math.floor(fish.x) - 50) &&
         (player.y + 83) == fish.y ) {
 
             gameScore = gameScore + 10;
@@ -163,10 +152,10 @@ Player.prototype.catchFish = function() {
 
             //Move fish offscreen after fish is caught
             fish.x = -100;
-            fishSound.play();
+            FISH_SOUND.play();
 
-            }//end if
-}
+        }//end if
+};
 
 Player.prototype.reset = function() {
     'use strict';
@@ -207,7 +196,6 @@ Player.prototype.handleInput = function(key) {
     // Useful to find out where player is when debugging
     // console.log("Position: x " + this.x + " and y " + this.y);
 };
-
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
