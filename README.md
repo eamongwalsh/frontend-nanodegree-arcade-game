@@ -10,7 +10,9 @@ To run the game simply clone the repository and open index.html. Instructions ar
 Much inspiration and valuable insights from the following. Thanks guys!
 
 Jedrzej Lewandowski https://github.com/TheFullResolution
+
 Best Udacity app of 2014 http://sentry71.github.io/arcade/
+
 Save the kittys by @tonimarierib http://tonirib.github.io/frontend-nanodegree-arcade-game/
 
 Sounds courtesy of http://freesound.org/
