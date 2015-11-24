@@ -10,6 +10,7 @@ var gameoverSound = new Audio('sounds/gameover.wav');
 
 // Enemy class and methods below
 var Enemy = function(x,y) {
+    'use strict';
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
@@ -18,7 +19,7 @@ var Enemy = function(x,y) {
     this.sprite = 'images/enemy-bug.png';
     this.x = x;
     this.y = y;
-    
+
     // Set the speed of the enemies - played around with this until just right!
     this.rate = 100 + Math.floor(Math.random() * 150);
 };
@@ -26,6 +27,7 @@ var Enemy = function(x,y) {
 // Update the enemy's position, required method for game
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
+    'use strict';
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
@@ -40,22 +42,24 @@ Enemy.prototype.update = function(dt) {
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
+     'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 // Fish class and methods below
 var Fish = function(x,y) {
-
+    'use strict';
     this.sprite = 'images/char-fish.png';
     this.x = x;
     this.y = y;
-    
+
     // Set the speed of the fish - played around with this until just right!
     this.rate = 100 + Math.floor(Math.random() * 50);
 };
 
-// Update the fish's position, 
+// Update the fish's position
 Fish.prototype.update = function(dt) {
+    'use strict';
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers. And fish goes the opposite direction!
@@ -64,6 +68,7 @@ Fish.prototype.update = function(dt) {
 
 // Draw the fish on the screen, required method for game
 Fish.prototype.render = function() {
+    'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
@@ -73,8 +78,9 @@ Fish.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 var Player = function() {
+    'use strict';
     this.sprite = 'images/char-boy.png';
-    
+
     // Place player at starting position
     this.x = 201;
     this.y = 383;
@@ -82,38 +88,41 @@ var Player = function() {
 };
 
 Player.prototype.render = function() {
+    'use strict';
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-}
+};
 
 Player.prototype.update = function(dt) {
+     'use strict';
     // You should multiply any movement by the dt parameter
     // which will ensure the game runs at the same speed for
     // all computers.
     this.x * dt;
     this.y * dt;
-    
+
     // Reset the Player to initial position when he/she reaches the water
     // and increase game score by one point!
     if (this.y <= 0) {
         player.reset();
         gameScore = gameScore + 1;
         document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
-        
+
         scoreSound.play();
     }
-    
+
 };
 
 Player.prototype.checkCollisions = function() {
-    
-        // var enemyx = [];
-    if (gameLives <= 0) {    
+    'use strict';
+
+    // var enemyx = [];
+    if (gameLives <= 0) {
         gameoverSound.play();
         gameOver();
     }
-    
+
     for (var enemy = 0; enemy < allEnemies.length; enemy++) {
-                
+
         /*
         Used while debugging collisions to see where the heck the enemy was!!
         enemyx.push(allEnemies[enemy].x);
@@ -122,53 +131,56 @@ Player.prototype.checkCollisions = function() {
                 console.log("Posx " + enemyx[pos]);
         }
         */
-                
+
         if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
                 player.y == allEnemies[enemy].y) {
-                        
+
             // console.log("Reset game as Player x " + player.x + " and enemy x " + Math.floor(allEnemies[enemy].x));
             //console.log("Player and 1st Enemy y" + player.y + allEnemies[enemy].y);
-            //We have a collision if the X is within +- 10 and y 
+            //We have a collision if the X is within +- 10 and y
             //console.log("Reset the player!");
-            
+
             enemySound.play();
-            
+
             //Player loses a life
             gameLives = gameLives - 1;
             document.getElementById("lives").innerHTML = "Lives: " + gameLives;
             this.reset();
- 
+
         }//end id
     }//end for loop
 }
 
 Player.prototype.catchFish = function() {
-    
+
+    'use strict';
         //console.log("Fish" + fish.x + " and fishy " + fish.y + player.y)
         if (player.x < (Math.floor(fish.x) + 50) && (player.x > Math.floor(fish.x) - 50) &&
         (player.y + 83) == fish.y ) {
-                        
+
             gameScore = gameScore + 10;
             document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
-            
+
             //Move fish offscreen after fish is caught
             fish.x = -100;
             fishSound.play();
- 
+
             }//end if
 }
 
 Player.prototype.reset = function() {
+    'use strict';
     // Place player at starting position
     this.x = 201;
     this.y = 383;
-    
+
     //Add another bonus opportunity!
     fish.x = 551;
-    
+
 };
 
 Player.prototype.handleInput = function(key) {
+    'use strict';
     //Handle player movement here
     switch(key) {
     case 'up':
@@ -194,7 +206,7 @@ Player.prototype.handleInput = function(key) {
     }
     // Useful to find out where player is when debugging
     // console.log("Position: x " + this.x + " and y " + this.y);
-}
+};
 
 
 // Now instantiate your objects.
@@ -218,6 +230,7 @@ allEnemies = [bug1, bug2, bug3, bug4, bug5, bug6];
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
 document.addEventListener('keyup', function(e) {
+    'use strict';
     var allowedKeys = {
         37: 'left',
         38: 'up',
@@ -229,12 +242,14 @@ document.addEventListener('keyup', function(e) {
 });
 
 function gameOver() {
-    
+    'use strict';
     allEnemies.forEach(function(enemy) {
             enemy.rate = 0;
         });
     fish.rate = 0;
-    
+
+    document.getElementById("gamestop").innerHTML = "REFRESH SCREEN TO PLAY AGAIN!";
+
     //Set the isgameOver player property to true
     player.isgameOver = true;
-}
+};

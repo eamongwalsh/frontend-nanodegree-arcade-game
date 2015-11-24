@@ -3,20 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
+      <link href='https://fonts.googleapis.com/css?family=Play:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div id= "gametitle">
-        <span id= "name">Just another Frogger WebApp!</span>
+        <h2>Just another Frogger Web App by Eamon Walsh!</h2>
     </div>
     <div id="scorezone">
+        <br/>
         <span id="gamescore">Score: 0</span>
         <span id="lives">Lives: 10</span>
-        <br/><span>Catch a fish for bonus points!</span>
+        <br/>
+        <h1 id="gamestop">Enjoy the game - instructions below</h1>
     </div>
     
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
+    
+    <div id="instructions">
+        <h2>Instructions</h2>
+        <p>Cross the path to the water to score. Avoid bugs!</p>
+        <h3>Gameplay Controls</h3>
+        <p>Use <kbd>&uarr;</kbd><kbd>&larr;</kbd><kbd>&darr;</kbd><kbd>&rarr;</kbd>  to move.</p>
+        <br/><span>Catch a fish for bonus points!</span>
+    </div>
 </body>
 </html>
