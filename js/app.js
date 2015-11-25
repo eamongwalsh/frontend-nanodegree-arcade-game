@@ -126,8 +126,8 @@ Player.prototype.checkCollisions = function() {
     }
 
     for (var enemy = 0; enemy < allEnemies.length; enemy++) {
-        if (player.x < (Math.floor(allEnemies[enemy].x) + 30) && (player.x > Math.floor(allEnemies[enemy].x) - 30) &&
-                player.y == allEnemies[enemy].y) {
+        if (this.x < (Math.floor(allEnemies[enemy].x) + 30) && (this.x > Math.floor(allEnemies[enemy].x) - 30) &&
+                this.y == allEnemies[enemy].y) {
 
             ENEMY_SOUND.play();
 
@@ -144,8 +144,8 @@ Player.prototype.checkCollisions = function() {
 Player.prototype.catchFish = function() {
 
     'use strict';
-    if (player.x < (Math.floor(fish.x) + 50) && (player.x > Math.floor(fish.x) - 50) &&
-        (player.y + 83) == fish.y ) {
+    if (this.x < (Math.floor(fish.x) + 50) && (this.x > Math.floor(fish.x) - 50) &&
+        (this.y + 83) == fish.y ) {
 
             gameScore = gameScore + 10;
             document.getElementById("gamescore").innerHTML = "Score: " + gameScore;
@@ -240,4 +240,4 @@ function gameOver() {
 
     //Set the isgameOver player property to true
     player.isgameOver = true;
-};
+}
